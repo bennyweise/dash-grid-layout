@@ -1,8 +1,21 @@
 {
   "src/lib/components/Grid.react.js": {
-    "description": "ExampleComponent is an example component.\nIt takes a property, `label`, and\ndisplays it.\nIt renders an input with the property `value`\nwhich is editable by the user.",
+    "description": "Grid is a dashboarding component that allows us to make resizable, draggable layouts",
     "displayName": "Grid",
-    "methods": [],
+    "methods": [
+      {
+        "name": "handleOnLayoutChange",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "layout",
+            "type": null
+          }
+        ],
+        "returns": null
+      }
+    ],
     "props": {
       "id": {
         "type": {
@@ -15,7 +28,7 @@
         "type": {
           "name": "string"
         },
-        "required": true,
+        "required": false,
         "description": "A label that will be printed when this component is rendered."
       },
       "value": {
@@ -31,6 +44,87 @@
         },
         "required": false,
         "description": "Dash-assigned callback that should be called whenever any of the\nproperties change"
+      },
+      "children": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "children or something"
+      },
+      "cols": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "The number of columns in the grid"
+      },
+      "rows": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "The number of rows in the grid"
+      },
+      "width": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "Width of each column"
+      },
+      "height": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "Height of each row"
+      },
+      "colWidth": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "Column width\nTODO Not sure if this one is declared properly"
+      },
+      "rowHeight": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "Row height"
+      },
+      "layout": {
+        "type": {
+          "name": "array"
+        },
+        "required": false,
+        "description": "The layout of components in the grid",
+        "defaultValue": {
+          "value": "[]",
+          "computed": false
+        }
+      },
+      "next_layout": {
+        "type": {
+          "name": "array"
+        },
+        "required": false,
+        "description": "Not to be passed through - holds"
+      },
+      "autoSize": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Whether to resize the grid to fit the current layout"
+      },
+      "draggableHandle": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "class name for the draggable handle component"
       }
     }
   }

@@ -19,13 +19,24 @@ class App extends Component {
 
     render() {
         return (
-            <div>
-                <Grid
-                    setProps={this.setProps}
-                    {...this.state}
-                />
-            </div>
-        )
+          <div>
+              <h1>plotly-grid Demo</h1>
+
+              <hr/>
+              <h2>PlotlyGrid</h2>
+              <Grid
+                  // label="This is an example label"
+                  // value={this.state.value}
+                  // setProps={newProps => this.setState({value: newProps.value})}
+
+              >
+                  <div key="a">a</div>
+                  <div key="b">d</div>
+                  <div key="c">f</div>
+              </Grid>
+              <hr/>
+          </div>
+        );
     }
 }
 

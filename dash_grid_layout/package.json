@@ -15,7 +15,8 @@
     "author": "Benjamin Weise ben.weise@gmail.com",
     "license": "MIT",
     "dependencies": {
-        "ramda": "^0.25.0"
+        "ramda": "^0.25.0",
+        "react-grid-layout": "^0.16.6"
     },
     "devDependencies": {
         "babel-core": "^6.26.3",

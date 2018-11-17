@@ -1,71 +1,149 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import GridLayout from 'react-grid-layout';
 
 /**
- * ExampleComponent is an example component.
- * It takes a property, `label`, and
- * displays it.
- * It renders an input with the property `value`
- * which is editable by the user.
+ * Grid is a dashboarding component that allows us to make resizable, draggable layouts
  */
-export default class Grid extends Component {
-    render() {
-        const {id, label, setProps, value} = this.props;
+class Grid extends Component {
+  constructor(props) {
+    super(props);
+    this.handleOnLayoutChange = this.handleOnLayoutChange.bind(this);
+  }
 
-        return (
-            <div id={id}>
-                ExampleComponent: {label}&nbsp;
-                <input
-                    value={value}
-                    onChange={e => {
-                        /*
-                         * Send the new value to the parent component.
-                         # setProps is a prop that is automatically supplied
-                         * by dash's front-end ("dash-renderer").
-                         * In a Dash app, this will send the data back to the
-                         * Python Dash app server.
-                         * If the component properties are not "subscribed"
-                         * to by a Dash callback, then Dash dash-renderer
-                         * will not pass through `setProps` and it is expected
-                         * that the component manages its own state.
-                         */
-                         if (setProps) {
-                             setProps({
-                                value: e.target.value
-                            });
-                        } else {
-                            this.setState({
-                                value: e.target.value
-                            })
-                        }
-                    }}
-                />
-            </div>
-        );
+  /*
+   * We need to fire an event whenever the layout changes. There are 2 events:
+   * layout - whenever the grid is updated (drag, resize, etc.)
+   * next_layout - whenever the number of items in the grid changed or the dimensions change.
+   *   We can check for next_layout events to ensure we can redraw any components that need
+   *   to be resized. In the case where we are listening for next_layout, the layout state
+   *   gives us the previous layout so we can calculate which components need to be updated.
+   */
+  handleOnLayoutChange(layout) {
+    let layoutChanged = false;
+    if (layout.length !== this.props.layout.length) {
+      console.log('number of components changed');
+      layoutChanged = true;
     }
+    for (let i = 0; i < layout.length; i++) {
+      if (layout[i].w !== this.props.layout[i].w || layout[i].h !== this.props.layout[i].h) {
+        console.log('component size changed');
+        layoutChanged = true;
+      }
+    }
+
+    if (layoutChanged) {
+      /**
+       * Firing a change on next_layout allows us to figure out if a redraw is required
+       * before losing information about the previous layout
+       */
+      this.props.setProps({next_layout: layout});
+    }
+    // TODO Always firing a layout change event will allow us to dynamically save the layout,
+    // but will it cause any issues getting stuck in a continuous loop?
+    this.props.setProps({layout: layout});
+  }
+
+  render() {
+    return (
+        <GridLayout className="layout" layout={this.props.layout}
+                    cols={this.props.cols} width={this.props.width} colWidth={this.props.colWidth}
+                    rows={this.props.rows} height={this.props.height} rowHeight={this.props.rowHeight}
+
+                    autoSize={this.props.autoSize} draggableHandle={this.props.draggableHandle}
+
+                    onLayoutChange={this.handleOnLayoutChange}>
+
+          {Array.isArray(this.props.children) ? this.props.children.map(child => {
+            return child.key ? child : child.props.children;
+          }) : this.props.children ? [this.props.children.props.children] : null}
+        </GridLayout>
+    )
+  }
 }
 
-Grid.defaultProps = {};
-
 Grid.propTypes = {
-    /**
-     * The ID used to identify this component in Dash callbacks
-     */
-    id: PropTypes.string,
+  /**
+   * The ID used to identify this component in Dash callbacks
+   */
+  id: PropTypes.string,
 
-    /**
-     * A label that will be printed when this component is rendered.
-     */
-    label: PropTypes.string.isRequired,
+  /**
+   * A label that will be printed when this component is rendered.
+   */
+  label: PropTypes.string,
 
-    /**
-     * The value displayed in the input
-     */
-    value: PropTypes.string,
+  /**
+   * The value displayed in the input
+   */
+  value: PropTypes.string,
 
-    /**
-     * Dash-assigned callback that should be called whenever any of the
-     * properties change
-     */
-    setProps: PropTypes.func
+  /**
+   * Dash-assigned callback that should be called whenever any of the
+   * properties change
+   */
+  setProps: PropTypes.func,
+
+  /**
+   * children or something
+   */
+  children: PropTypes.node,
+
+  /**
+   * The number of columns in the grid
+   */
+  cols: PropTypes.number,
+
+  /**
+   * The number of rows in the grid
+   */
+  rows: PropTypes.number,
+
+  /**
+   * Width of each column
+   */
+  width: PropTypes.number,
+
+  /**
+   * Height of each row
+   */
+  height: PropTypes.number,
+
+  /**
+   * Column width
+   * TODO Not sure if this one is declared properly
+   */
+  colWidth: PropTypes.number,
+
+  /**
+   * Row height
+   */
+  rowHeight: PropTypes.number,
+
+
+  /**
+   * The layout of components in the grid
+   */
+  layout: PropTypes.array,
+
+  /**
+   * Not to be passed through - holds
+   */
+  next_layout: PropTypes.array,
+
+  /**
+   * Whether to resize the grid to fit the current layout
+   */
+  autoSize: PropTypes.bool,
+
+  /**
+   * class name for the draggable handle component
+   */
+  draggableHandle: PropTypes.string
 };
+
+Grid.defaultProps = {
+  layout: []
+};
+
+export default Grid;
