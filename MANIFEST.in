@@ -1,0 +1,5 @@
+include dash_grid_layout/dash_grid_layout.min.js
+include dash_grid_layout/dash_grid_layout.dev.js
+include dash_grid_layout/metadata.json
+include dash_grid_layout/package.json
+include README.md
