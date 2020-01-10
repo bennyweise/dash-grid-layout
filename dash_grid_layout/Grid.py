@@ -22,16 +22,13 @@ TODO Not sure if this one is declared properly
 - layout (list; optional): The layout of components in the grid
 - next_layout (list; optional): Not to be passed through - holds
 - autoSize (boolean; optional): Whether to resize the grid to fit the current layout
-- draggableHandle (string; optional): class name for the draggable handle component
-
-Available events: """
+- draggableHandle (string; optional): class name for the draggable handle component"""
     @_explicitize_args
     def __init__(self, children=None, id=Component.UNDEFINED, label=Component.UNDEFINED, value=Component.UNDEFINED, cols=Component.UNDEFINED, rows=Component.UNDEFINED, width=Component.UNDEFINED, height=Component.UNDEFINED, colWidth=Component.UNDEFINED, rowHeight=Component.UNDEFINED, layout=Component.UNDEFINED, next_layout=Component.UNDEFINED, autoSize=Component.UNDEFINED, draggableHandle=Component.UNDEFINED, **kwargs):
         self._prop_names = ['children', 'id', 'label', 'value', 'cols', 'rows', 'width', 'height', 'colWidth', 'rowHeight', 'layout', 'next_layout', 'autoSize', 'draggableHandle']
         self._type = 'Grid'
         self._namespace = 'dash_grid_layout'
         self._valid_wildcard_attributes =            []
-        self.available_events = []
         self.available_properties = ['children', 'id', 'label', 'value', 'cols', 'rows', 'width', 'height', 'colWidth', 'rowHeight', 'layout', 'next_layout', 'autoSize', 'draggableHandle']
         self.available_wildcard_properties =            []
 
@@ -45,26 +42,3 @@ Available events: """
                 raise TypeError(
                     'Required argument `' + k + '` was not specified.')
         super(Grid, self).__init__(children=children, **args)
-
-    def __repr__(self):
-        if(any(getattr(self, c, None) is not None
-               for c in self._prop_names
-               if c is not self._prop_names[0])
-           or any(getattr(self, c, None) is not None
-                  for c in self.__dict__.keys()
-                  if any(c.startswith(wc_attr)
-                  for wc_attr in self._valid_wildcard_attributes))):
-            props_string = ', '.join([c+'='+repr(getattr(self, c, None))
-                                      for c in self._prop_names
-                                      if getattr(self, c, None) is not None])
-            wilds_string = ', '.join([c+'='+repr(getattr(self, c, None))
-                                      for c in self.__dict__.keys()
-                                      if any([c.startswith(wc_attr)
-                                      for wc_attr in
-                                      self._valid_wildcard_attributes])])
-            return ('Grid(' + props_string +
-                   (', ' + wilds_string if wilds_string != '' else '') + ')')
-        else:
-            return (
-                'Grid(' +
-                repr(getattr(self, self._prop_names[0], None)) + ')')

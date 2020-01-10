@@ -11,19 +11,19 @@ app.scripts.config.serve_locally = True
 def generate_new_dash_item(idx, x=0, y=0, w=4, h=4, grid_width=150, grid_height=150):
     return html.Div(key=idx,
                     children=[html.Div(className="widget-drag-handle", children="{} another draggable bit".format(idx)),
-                                dcc.Graph(
-                                        id='{}-example-graph'.format(idx),
-                                        style={'height': '{}px'.format(h * grid_height), 'width': '{}px'.format(w * grid_width)},
-                                        figure={
-                                            'data': [
-                                                {'x': [1, 2, 3], 'y': [4, 4, 4], 'type': 'bar', 'name': idx},
-                                                {'x': [1, 2, 3], 'y': [1, 1, 1], 'type': 'bar', 'name': u'Montr?al'},
-                                            ],
-                                            'layout': {
-                                                'title': 'Added Data Visualization'
-                                            }
-                                        }
-                                    )
+                                # dcc.Graph(
+                                #         id='{}-example-graph'.format(idx),
+                                #         style={'height': '{}px'.format(h * grid_height), 'width': '{}px'.format(w * grid_width)},
+                                #         figure={
+                                #             'data': [
+                                #                 {'x': [1, 2, 3], 'y': [4, 4, 4], 'type': 'bar', 'name': idx},
+                                #                 {'x': [1, 2, 3], 'y': [1, 1, 1], 'type': 'bar', 'name': u'Montr?al'},
+                                #             ],
+                                #             'layout': {
+                                #                 'title': 'Added Data Visualization'
+                                #             }
+                                #         }
+                                #     )
                                 ]
 
                     )
@@ -43,7 +43,7 @@ children=[
         rows=8,
         rowHeight=155,
         width=1280,
-        draggableHandle=".widget-drag-handle",
+        draggableHandle="",
         children=[
             generate_new_dash_item('b'),
             generate_new_dash_item('c')

@@ -45,6 +45,17 @@ class Grid extends Component {
   }
 
   render() {
+    let childrenToRender;
+    if (Array.isArray(this.props.children)) {
+        // Wrap each child in a div with a key - this seems to be the easiest way to enable the 
+        // grid layout component to recognise and attach to these components
+        childrenToRender = this.props.children.map((child, i) => {
+          return <div key={i + ""}>{child}</div>;
+        });
+    }
+    else {
+        childrenToRender = this.props.children ? [this.props.children.props.children] : null;
+    }
     return (
         <GridLayout className="layout" layout={this.props.layout}
                     cols={this.props.cols} width={this.props.width} colWidth={this.props.colWidth}
@@ -54,9 +65,8 @@ class Grid extends Component {
 
                     onLayoutChange={this.handleOnLayoutChange}>
 
-          {Array.isArray(this.props.children) ? this.props.children.map(child => {
-            return child.key ? child : child.props.children;
-          }) : this.props.children ? [this.props.children.props.children] : null}
+            {childrenToRender}
+
         </GridLayout>
     )
   }
